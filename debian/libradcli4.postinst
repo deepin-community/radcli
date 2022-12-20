@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+case $1 in
+    configure)
+	for file in /etc/radcli/*.dpkg-migrated; do
+	    if [ ! -e "$file" ]; then
+		continue
+	    fi
+	    echo "Overwriting ${file%%.dpkg-migrated} with original file from libfreeradius-client2"
+	    mv $file ${file%%.dpkg-migrated}
+	done
+    ;;
+esac
+
+#DEBHELPER#

@@ -1,0 +1,112 @@
+* Version 1.2.11 (released 2018-09-14)
+- rc_read_dictionary_from_buffer: introduced new function; this
+  is required to load dictionary attributes from string buffer
+  (#24)
+- Added non-temporary IPv6 address support (#23). This enables
+  radcli to use Global IPv6 address instead of temporary IPv6
+  address as source address for packets sent out when IPv6 
+  Privacy Extensions are enabled in system.
+
+
+* Version 1.2.10 (released 2018-05-08)
+- rc_send_server_ctx: addressed unaligned access issue on certain
+  platforms (#27).
+- Added Namespace support (#30). radcli now supports Namespaces on 
+  Linux based systems.
+- rc_apply_config: introduced new function; this is required to be
+  called when no configuration file is set and parameters are set
+  individually using calls to rc_add_config().
+
+
+* Version 1.2.9 (released 2018-01-20)
+- rc_avpair_gen: addressed issue that caused all attributes to be
+  rejected if the last attribute in the message is a VSA with an unknown
+  Vendor-ID or Type.
+
+
+* Version 1.2.8 (released 2017-07-29)
+- rc_random_vector will use gnutls_rnd() to obtain randomness if
+  compiled with GnuTLS. This enables the library to not depend
+  on specific kernel versions (there are versions of Linux kernel
+  which do not provide calls for getentopy libc function).
+- Fixed issue when several servers in radiusclient.conf are present.
+  The issue caused only the first server to be contacted. Report
+  and fix by Martin Belanger.
+- No longer divide the timeout when across multiple servers.
+  This restores the semantics of radiusclient-ng and freeradius-client
+  in the 'radius_timeout' configuration contents. Report and
+  fix by Martin Belanger.
+- On REJECT copy back the AV-pair list. Prior to 1.2.8 radcli
+  would copy the AV-pair list only in case of ACCEPT and CHALLENGE
+  scenarios, and that caused issues with EAP. Patch by Aravind Prasad S.
+
+
+* Version 1.2.7 (released 2016-12-18)
+- Use monotonic time to calculate time differences. Based on
+  patch by Marcel Patzlaff.
+- Added basic EAP support. radcli will now automatically add
+  a Message-Authenticator attribute to messages containing
+  EAP-Message attributes. In addition, radcli will handle
+  Access-Challenge response by returning a new
+  CHALLENGE_RC result code. Patch by Martin Belanger.
+
+
+* Version 1.2.6 (released 2016-04-04)
+- Removed unused or deprecated options from configure.
+- Added missing manpage rc_avpair_remove.3
+- Deleted unused code.
+
+
+* Version 1.2.5 (released 2015-11-28)
+- Added TCP support (Aravind Prasad S)
+- Corrected buffer overflow in rc_ipaddr_local()
+- Added nas-ip config file option. That option allows to override
+  the IP reported by NAS to the radius server.
+- The NAS identifier set in the configuration file will override
+  any identifier set by the application.
+- The 'serv-auth-type' config option was renamed to 'serv-type'.
+  That option also allows to configure for radius with TCP.
+
+
+* Version 1.2.4 (released 2015-09-26)
+- Use a portable name for radius accounting service (issue #4)
+
+
+* Version 1.2.3 (released 2015-09-02)
+- Re-added server fallback ability (Michael Richardson)
+- Added 'clientdebug' option in the configuration file to allow
+  easier debugging of the client (Michael Richardson)
+
+
+* Version 1.2.2 (released 2015-08-21)
+- Added versioned symbols
+
+
+* Version 1.2.1 (released 2015-06-15)
+- Removal of unused port-id-map file.
+- Corrections in the link creation during install.
+- Corrections in the types of the distributed dictionary.
+- Added compatibility headers for radiusclient-ng.
+- Added new API to access the context of a request.
+- Eliminated the radius_deadtime option, and simplified the
+  server setting option. Only a single auth or acct server
+  can be specified.
+- API and ABI modifications:
+  - rc_aaa_ctx_free: New function
+  - rc_aaa_ctx_get_secret: New function
+  - rc_aaa_ctx_get_vector: New function
+  - rc_aaa_ctx: New function
+
+
+* Version 1.2.0 (released 2015-06-07)
+- Initial version of the fork. That changes the name of the library to
+  libradcli.so, and the header to radcli.h. A compatibility header with
+  freeradius-client library is also installed.
+- Adds support for TLS (RFC6614) and DTLS (RFC7360) without
+  requiring any code changes for existing applications. It adds
+  new configuration options: serv-auth-type, tls-ca-file,
+  tls-key-file, tls-cert-file, tls-verify-hostname.
+- Removed the requirement for legacy options to be present in the configuration
+  file. That includes: auth_order, login_tries, login_timeout, nologin, issue,
+  login_radius, seqfile
+- Added higher level API to read values from VALUE_PAIR.

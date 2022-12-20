@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+case $1 in
+    abort-install|abort-upgrade)
+	rm -f /etc/radcli/*.migrated
+	rmdir --ignore-fail-on-non-empty /etc/radcli
+    ;;
+esac
+
+#DEBHELPER#

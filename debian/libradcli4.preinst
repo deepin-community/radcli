@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+FILES_TO_MIGRATE="
+/etc/radiusclient/dictionary
+/etc/radiusclient/dictionary.ascend
+/etc/radiusclient/dictionary.compat
+/etc/radiusclient/dictionary.merit
+/etc/radiusclient/dictionary.sip
+/etc/radiusclient/radiusclient.conf
+/etc/radiusclient/servers
+"
+
+is_modified_conffile() {
+    actual_md5=$(md5sum $1 | awk '{print $1}')
+    expected_md5=$(dpkg-query -f '${Conffiles}' -W libfreeradius-client2 | awk '$1 == "'"$1"'" { print $2 }')
+    test "$actual_md5" != "$expected_md5"
+}
+
+if [ ! -d /etc/radcli ] && [ -d /etc/radiusclient ];
+then
+    # no radcli config exists but a legacy configuration from
+    # radiusclient-ng exists, use it, as this package is a fork of
+    # radiusclient-ng
+    mkdir -p /etc/radcli
+    for file in $FILES_TO_MIGRATE; do
+	if is_modified_conffile $file; then
+	    new_file="/etc/radcli/$(basename $file).dpkg-migrated"
+	    echo "Preparing a copy of $file to initialize ${new_file%%.dpkg-migrated}"
+	    cp -a $file $new_file
+            if [ -f "$new_file" -a ! -h "$new_file" ]; then
+		sed -i -e 's!/etc/radiusclient/!/etc/radcli/!g' "$new_file"
+	    fi
+	fi
+    done
+fi
+
+#DEBHELPER#

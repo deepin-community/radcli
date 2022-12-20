@@ -1,0 +1,2 @@
+version=3
+https://github.com/radcli/radcli/tags .*/archive/?(\d[\d\.]+).tar.gz

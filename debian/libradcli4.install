@@ -1,0 +1,7 @@
+etc/radcli/radiusclient.conf     etc/radcli
+etc/radcli/radiusclient-tls.conf etc/radcli
+etc/radcli/servers               etc/radcli
+etc/radcli/servers-tls           etc/radcli
+usr/lib/*/lib*.so.*
+usr/share/radcli/dictionary      etc/radcli
+usr/share/radcli/dictionary.*    etc/radcli

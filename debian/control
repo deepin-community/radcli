@@ -1,0 +1,35 @@
+Source: radcli
+Priority: optional
+Maintainer: Debian VoIP Team <pkg-voip-maintainers@lists.alioth.debian.org>
+Uploaders: Mark Purcell <msp@debian.org>, Jan Janak <jan@iptel.org>,
+ Kilian Krause <kilian@debian.org>, Tzafrir Cohen <tzafrir@debian.org>
+Build-Depends: debhelper (>= 12), debhelper-compat (= 12),
+ dpkg-dev (>= 1.16.1~), automake, libtool, pkg-config,
+ libgnutls28-dev
+Standards-Version: 4.5.0
+Section: libs
+Homepage: http://radcli.github.io/radcli/
+Vcs-Git: https://salsa.debian.org/debian/radcli.git
+Vcs-Browser: https://salsa.debian.org/debian/radcli
+Rules-Requires-Root: no
+
+Package: libradcli-dev
+Section: libdevel
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+ libradcli4 (= ${binary:Version})
+Description: Enhanced RADIUS client library development files
+ Enhanced RADIUS client library contains implementation of the RADIUS
+ protocol for remote authentication and accounting.
+ .
+ This package contains development libraries and header files.
+
+Package: libradcli4
+Architecture: any
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Enhanced RADIUS client library
+ radcli is an enhanced version of the freeradius-client, libradius1
+ and it's successor radiusclient-ng, the RADIUS client library.
+ radcli contains vastly improved API and many additional bug
+ fixes. The library is also more efficient than the original version.
